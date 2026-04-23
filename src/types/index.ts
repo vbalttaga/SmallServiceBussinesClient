@@ -109,9 +109,8 @@ export interface TimeSlotDto {
 }
 
 export interface AppointmentDto {
-  id: number;
   appointmentId: number;
-  organisationId: number;
+  organisationId?: number;
   branchId?: number;
   branchName?: string;
   branchAddress?: string;
@@ -122,9 +121,11 @@ export interface AppointmentDto {
   staffName: string;
   staffPhotoUrl?: string;
   clientId: number;
+  /** Present in GetByStaff projection ("John Doe"). */
+  clientName?: string;
+  /** Present in GetByClient / GetById projections. */
   clientFirstName?: string;
   clientLastName?: string;
-  clientName?: string;
   clientEmail?: string;
   clientPhone?: string;
   appointmentStatusId: number;

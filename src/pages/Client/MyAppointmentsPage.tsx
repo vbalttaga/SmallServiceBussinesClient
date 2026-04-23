@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { clientApi } from '../../api/appointmentsApi';
 import type { AppointmentDto } from '../../types';
+import LoyaltyWidget from '../../components/LoyaltyWidget';
 import '../Internal/Internal.css';
 
 export default function MyAppointmentsPage() {
@@ -16,19 +17,21 @@ export default function MyAppointmentsPage() {
   async function cancel(id: number) {
     if (!confirm(t('myAppts.confirmCancel', 'Cancel this appointment?'))) return;
     await clientApi.cancel(id);
-    setRows((list) => list.map((r) => (r.id === id || r.appointmentId === id) ? { ...r, statusCode: 'cancelled', statusName: 'Cancelled' } : r));
+    setRows((list) => list.map((r) => r.appointmentId === id
+      ? { ...r, statusCode: 'cancelled', statusName: 'Cancelled' } : r));
   }
 
   return (
     <div style={{ maxWidth: 860, margin: '24px auto', padding: 16 }}>
       <h1>{t('myAppts.title', 'My appointments')}</h1>
+      <LoyaltyWidget />
       <label style={{ display: 'inline-flex', gap: 6, alignItems: 'center', margin: '12px 0' }}>
         <input type="checkbox" checked={includePast} onChange={(e) => setIncludePast(e.target.checked)} />
         {t('myAppts.includePast', 'Include past')}
       </label>
 
       {rows.map((a) => {
-        const id = a.appointmentId ?? a.id;
+        const id = a.appointmentId;
         return (
           <div key={id} className="dash-card" style={{ marginBottom: 12 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>

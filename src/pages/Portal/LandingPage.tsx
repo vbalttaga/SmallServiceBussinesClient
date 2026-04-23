@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { CalendarDays, Rocket, Scissors, Sparkles, Stethoscope, Store, LogIn, Building2 } from 'lucide-react';
+import { CalendarDays, Rocket, Scissors, Sparkles, Stethoscope, Store, LogIn, Building2, Search } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 
 /**
@@ -27,6 +27,9 @@ export default function LandingPage() {
               <Rocket size={18} /> {t('landing.startTrial', 'Start free')}
             </Link>
           )}
+          <Link to="/discover" className="portal-hero__btn portal-hero__btn--secondary">
+            <Search size={18} /> {t('landing.discover', 'Discover businesses')}
+          </Link>
           <Link to="/login" className="portal-hero__btn portal-hero__btn--secondary">
             <LogIn size={18} /> {t('portal.signIn')}
           </Link>

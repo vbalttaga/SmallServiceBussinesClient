@@ -7,6 +7,7 @@ import LoadingSpinner from './components/LoadingSpinner';
 import ToastContainer from './components/Toast';
 import PermissionRoute from './components/PermissionRoute';
 import { P } from './constants/permissions';
+import { TenantThemeProvider } from './theme/ThemeProvider';
 
 // Auth
 const LoginPage = lazy(() => import('./pages/Login/LoginPage'));
@@ -16,6 +17,8 @@ const AcceptInvitationPage = lazy(() => import('./pages/Auth/AcceptInvitationPag
 const PortalLayout = lazy(() => import('./pages/Portal/PortalLayout'));
 const PortalHomePage = lazy(() => import('./pages/Portal/PortalHomePage'));
 const RegisterOrganisationPage = lazy(() => import('./pages/Portal/RegisterOrganisationPage'));
+const MarketplacePage = lazy(() => import('./pages/Portal/MarketplacePage'));
+const ReviewSubmitPage = lazy(() => import('./pages/Portal/ReviewSubmitPage'));
 
 // Internal (authenticated staff/owner)
 const InternalLayout = lazy(() => import('./pages/Internal/InternalLayout'));
@@ -35,6 +38,9 @@ const RolesPage = lazy(() => import('./pages/Admin/RolesPage'));
 const UsersPage = lazy(() => import('./pages/Admin/UsersPage'));
 const OrgSettingsPage = lazy(() => import('./pages/OrgSettings/OrgSettingsPage'));
 const OrgStructurePage = lazy(() => import('./pages/Admin/OrgStructurePage'));
+
+// Design settings
+const DesignSettingsPage = lazy(() => import('./pages/Admin/DesignSettingsPage'));
 
 // Profile
 const ProfilePage = lazy(() => import('./pages/Profile/ProfilePage'));
@@ -56,6 +62,7 @@ export default function App() {
   return (
     <ErrorBoundary>
       <BrowserRouter>
+        <TenantThemeProvider>
         <ToastContainer />
         <Suspense fallback={<LoadingSpinner />}>
           <Routes>
@@ -64,6 +71,8 @@ export default function App() {
               <Route index element={<PortalHomePage />} />
             </Route>
             <Route path="/register" element={<RegisterOrganisationPage />} />
+            <Route path="/discover" element={<MarketplacePage />} />
+            <Route path="/review/:token" element={<ReviewSubmitPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/accept-invitation" element={<AcceptInvitationPage />} />
 
@@ -91,6 +100,7 @@ export default function App() {
               <Route path="users" element={<UsersPage />} />
               <Route path="roles" element={<RolesPage />} />
               <Route path="settings" element={<OrgSettingsPage />} />
+              <Route path="design" element={<DesignSettingsPage />} />
               <Route path="structure" element={<OrgStructurePage />} />
               <Route path=":entityName" element={<AdminListPage />} />
               <Route path=":entityName/:id" element={<AdminDetailPage />} />
@@ -118,6 +128,7 @@ export default function App() {
             <Route path="*" element={<Navigate to="/404" replace />} />
           </Routes>
         </Suspense>
+        </TenantThemeProvider>
       </BrowserRouter>
     </ErrorBoundary>
   );

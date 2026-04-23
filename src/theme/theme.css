@@ -1,0 +1,84 @@
+/*
+ * Tenant-level design-system overrides.
+ * These variables are written by applyThemeToRoot() based on the tenant's template.
+ * They fall back to the app's default palette when no tenant is active.
+ */
+:root {
+  /* Defaults (match "fresh-clean" template) */
+  --tenant-primary:       #2563eb;
+  --tenant-primary-hover: #1d4ed8;
+  --tenant-bg:            #f8fafc;
+  --tenant-surface:       #ffffff;
+  --tenant-surface-alt:   #f1f5f9;
+  --tenant-text:          #0f172a;
+  --tenant-text-muted:    #64748b;
+  --tenant-accent:        #06b6d4;
+  --tenant-border:        #e2e8f0;
+  --tenant-success:       #10b981;
+  --tenant-danger:        #ef4444;
+  --tenant-hero-gradient: linear-gradient(135deg, #eff6ff 0%, #f0fdfa 100%);
+  --tenant-font:          "Inter", system-ui, -apple-system, Segoe UI, sans-serif;
+  --tenant-heading-font:  "Inter", system-ui, -apple-system, Segoe UI, sans-serif;
+  --tenant-heading-weight: 600;
+  --tenant-scale:         1;
+}
+
+/* Portal pages inherit tenant theme */
+.portal-layout,
+.pb-shell {
+  background: var(--tenant-bg);
+  color: var(--tenant-text);
+  font-family: var(--tenant-font);
+}
+
+.portal-layout h1, .portal-layout h2, .portal-layout h3,
+.pb-shell h1, .pb-shell h2, .pb-shell h3 {
+  font-family: var(--tenant-heading-font);
+  font-weight: var(--tenant-heading-weight);
+}
+
+.tenant-uppercase-headings h1,
+.tenant-uppercase-headings h2,
+.tenant-uppercase-headings h3 {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Public booking theming hooks */
+.pb-card {
+  background: var(--tenant-surface);
+  border-color: var(--tenant-border);
+  color: var(--tenant-text);
+}
+.pb-item, .pb-staff, .pb-date, .pb-slot, .pb-chip, .pb-search,
+.pb-form input, .pb-form textarea {
+  border-color: var(--tenant-border);
+  color: var(--tenant-text);
+}
+.pb-item:hover, .pb-staff:hover { background: var(--tenant-surface-alt); }
+.pb-item__desc, .pb-staff__spec, .pb-date__dow, .pb-date__mon { color: var(--tenant-text-muted); }
+.pb-chip--active, .pb-date--active, .pb-slot--active, .pb-primary {
+  background: var(--tenant-primary) !important;
+  border-color: transparent !important;
+  color: #fff !important;
+}
+.pb-primary:hover:not(:disabled) { background: var(--tenant-primary-hover) !important; }
+.pb-back { color: var(--tenant-primary); }
+.pb-done__icon { background: color-mix(in srgb, var(--tenant-success, #10b981) 14%, transparent); color: var(--tenant-success, #10b981); }
+.pb-summary { background: var(--tenant-surface-alt); }
+.pb-token code { background: var(--tenant-surface-alt); color: var(--tenant-text); }
+
+/* Hero styles driven by data attribute */
+html[data-tenant-hero='gradient'] .portal-hero,
+html[data-tenant-hero='split'] .portal-hero {
+  background: var(--tenant-hero-gradient);
+  color: var(--tenant-text);
+  border-radius: 16px;
+}
+html[data-tenant-hero='image'] .portal-hero { background: var(--tenant-surface-alt); }
+
+/* Card style hooks */
+html[data-tenant-card='flat']    .pb-card { box-shadow: none; border: 1px solid var(--tenant-border); }
+html[data-tenant-card='bordered'] .pb-card { box-shadow: none; border: 2px solid var(--tenant-border); }
+html[data-tenant-card='elevated'] .pb-card { box-shadow: 0 8px 24px rgba(0, 0, 0, .08); border: none; }
+html[data-tenant-card='soft']    .pb-card { box-shadow: 0 1px 3px rgba(0, 0, 0, .04); }

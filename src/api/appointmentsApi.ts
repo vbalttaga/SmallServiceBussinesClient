@@ -2,7 +2,7 @@ import api from './client';
 import type {
   AppointmentDto, CreateAppointmentDto, CreateAppointmentResponse,
   UpdateAppointmentStatusDto, DashboardMetricsDto, TimeSlotDto,
-  StaffDto, WeeklyScheduleDayDto,
+  StaffDto, WeeklyScheduleDayDto, BusinessTypeDto,
 } from '../types';
 
 /** Authenticated staff/manager endpoints (scoped by JWT orgId). */
@@ -56,5 +56,5 @@ export const clientApi = {
 
 /** Business type catalog (used during registration). */
 export const businessTypesApi = {
-  list: () => api.get('/business-types').then((r) => r.data),
+  list: () => api.get<BusinessTypeDto[]>('/business-types').then((r) => r.data),
 };

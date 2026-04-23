@@ -4,6 +4,9 @@ import { Search, ChevronLeft, ChevronRight, Clock, User, Check, Calendar as Cale
 import { publicApi } from '../../api/publicApi';
 import { getSubdomainSlug } from '../../utils/tenant';
 import type { ServiceDto, StaffDto, ServiceCategoryDto, TimeSlotDto, BusinessSummaryDto } from '../../types';
+import PortfolioGallery from '../../components/PortfolioGallery';
+import ReviewsSection from '../../components/ReviewsSection';
+import PackagesSection from '../../components/PackagesSection';
 import './PublicBooking.css';
 
 type Step = 'service' | 'staff' | 'time' | 'contact' | 'done';
@@ -51,7 +54,11 @@ export default function PublicBookingPage() {
   // ---- Load slots when staff + date picked ----
   useEffect(() => {
     if (!selectedStaff || !selectedService) { setSlots([]); return; }
-    const dateStr = selectedDate.toISOString().slice(0, 10);
+    // Use local date components — toISOString() would convert to UTC and shift the day near midnight.
+    const y = selectedDate.getFullYear();
+    const m = String(selectedDate.getMonth() + 1).padStart(2, '0');
+    const d = String(selectedDate.getDate()).padStart(2, '0');
+    const dateStr = `${y}-${m}-${d}`;
     publicApi.getAvailability({ slug, staffId: selectedStaff.id, serviceId: selectedService.id, date: dateStr })
       .then(setSlots).catch(() => setSlots([]));
     setSelectedSlot(null);
@@ -117,6 +124,14 @@ export default function PublicBookingPage() {
       </div>
 
       {step === 'service' && (
+        <>
+        <PortfolioGallery slug={slug} onSelectStaff={(sid) => {
+          // Pick any eligible service then jump past the staff step — MVP: user picks service next anyway.
+          publicApi.getStaff(slug).then(list => {
+            const m = list.find(s => s.id === sid);
+            if (m) { setSelectedStaff(m); }
+          });
+        }} />
         <div className="pb-card">
           <h2>{t('booking.pickService', 'Choose a service')}</h2>
 
@@ -166,6 +181,9 @@ export default function PublicBookingPage() {
             )}
           </ul>
         </div>
+        <PackagesSection slug={slug} />
+        <ReviewsSection slug={slug} />
+        </>
       )}
 
       {step === 'staff' && selectedService && (

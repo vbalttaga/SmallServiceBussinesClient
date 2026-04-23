@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Outlet, NavLink, useNavigate, useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { LayoutDashboard, ChevronLeft, ChevronDown, ChevronRight, Database, Settings, FileText, Users, Globe, BarChart3, Navigation, Cog, Shield, Building2 } from 'lucide-react';
+import { LayoutDashboard, ChevronLeft, ChevronDown, ChevronRight, Database, Settings, FileText, Users, Globe, BarChart3, Navigation, Cog, Shield, Building2, Palette } from 'lucide-react';
 import { adminApi } from '../../api/adminApi';
 import { useAuthStore } from '../../store/authStore';
 import api from '../../api/client';
@@ -171,6 +171,16 @@ export default function AdminLayout() {
             >
               <Settings size={14} />
               {t('orgSettings.title')}
+            </NavLink>
+            <NavLink
+              to="/admin/design"
+              className={({ isActive }) =>
+                `sidebar-item ${isActive ? 'sidebar-item--active' : ''}`
+              }
+              style={{ display: 'flex', alignItems: 'center', gap: 6 }}
+            >
+              <Palette size={14} />
+              {t('design.navLabel', 'Design & Branding')}
             </NavLink>
             <NavLink
               to="/admin/structure"

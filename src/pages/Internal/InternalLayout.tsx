@@ -14,7 +14,7 @@ export default function InternalLayout() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { user, logout } = useAuthStore();
-  const { hasAny } = usePermission();
+  const { hasAnyPermission } = usePermission();
   const [open, setOpen] = useState(false);
 
   useEffect(() => { setOpen(false); }, [navigate]);
@@ -32,9 +32,9 @@ export default function InternalLayout() {
   ];
 
   const adminLinks = [
-    hasAny([P.CATALOG_SERVICES_MANAGE, P.CATALOG_STAFF_MANAGE, P.CATALOG_BRANCHES_MANAGE, P.ORG_USERS_MANAGE])
+    hasAnyPermission(P.CATALOG_SERVICES_MANAGE, P.CATALOG_STAFF_MANAGE, P.CATALOG_BRANCHES_MANAGE, P.ORG_USERS_MANAGE)
       && { to: '/admin', icon: <Shield size={18} />, label: t('nav.admin', 'Admin') },
-    hasAny([P.REPORTS_VIEW]) && { to: '/rpt', icon: <BarChart3 size={18} />, label: t('nav.reports', 'Reports') },
+    hasAnyPermission(P.REPORTS_VIEW) && { to: '/rpt', icon: <BarChart3 size={18} />, label: t('nav.reports', 'Reports') },
     { to: '/admin/settings', icon: <Settings size={18} />, label: t('internal.settings', 'Settings') },
   ].filter(Boolean) as { to: string; icon: React.ReactNode; label: string }[];
 

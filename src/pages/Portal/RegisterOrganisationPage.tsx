@@ -8,11 +8,13 @@ import { useAuthStore } from '../../store/authStore';
 import { translateApiMessage } from '../../utils/apiMessage';
 import type { BusinessTypeDto, TokenResponse } from '../../types';
 import LanguageSwitcher from '../../components/LanguageSwitcher';
-import { Building2, ExternalLink, ArrowRight } from 'lucide-react';
+import TemplatePicker from '../../components/TemplatePicker';
+import { Building2, ExternalLink, ArrowRight, Palette } from 'lucide-react';
 
 interface RegisterForm {
   organisationName: string;
   businessTypeCode: string;
+  designTemplateCode: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -28,6 +30,7 @@ export default function RegisterOrganisationPage() {
   const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<RegisterForm>({
     defaultValues: {
       businessTypeCode: 'barbershop',
+      designTemplateCode: 'fresh-clean',
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       currency: 'EUR',
     },
@@ -39,6 +42,7 @@ export default function RegisterOrganisationPage() {
   const [subdomainUrl, setSubdomainUrl] = useState('');
   const [businessTypes, setBusinessTypes] = useState<BusinessTypeDto[]>([]);
   const selectedTypeCode = watch('businessTypeCode');
+  const selectedTemplate = watch('designTemplateCode');
 
   useEffect(() => {
     businessTypesApi.list()
@@ -97,7 +101,7 @@ export default function RegisterOrganisationPage() {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--color-bg)', padding: 16 }}>
-      <div style={{ width: 520 }}>
+      <div style={{ width: 760, maxWidth: '100%' }}>
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 12 }}>
           <LanguageSwitcher />
         </div>
@@ -139,6 +143,21 @@ export default function RegisterOrganisationPage() {
             <label style={labelStyle}>{t('register.organisationName', 'Business name')} *</label>
             <input className={`form-control ${errors.organisationName ? 'is-invalid' : ''}`} style={inputStyle}
                    {...register('organisationName', { required: true })} />
+          </div>
+
+          <div style={{ marginBottom: 24 }}>
+            <label style={{ ...labelStyle, display: 'flex', alignItems: 'center', gap: 6 }}>
+              <Palette size={14} /> {t('register.designTemplate', 'Choose a design for your booking site')} *
+            </label>
+            <p style={{ fontSize: 12, color: 'var(--color-text-secondary)', margin: '0 0 10px' }}>
+              {t('register.designTemplateHint', 'Instantly applied to your public booking page. You can change it any time.')}
+            </p>
+            <input type="hidden" {...register('designTemplateCode', { required: true })} />
+            <TemplatePicker
+              value={selectedTemplate}
+              onChange={(code) => setValue('designTemplateCode', code, { shouldValidate: true })}
+              compact
+            />
           </div>
 
           <div style={{ display: 'flex', gap: 12, marginBottom: 14 }}>
