@@ -125,13 +125,7 @@ export default function PublicBookingPage() {
 
       {step === 'service' && (
         <>
-        <PortfolioGallery slug={slug} onSelectStaff={(sid) => {
-          // Pick any eligible service then jump past the staff step — MVP: user picks service next anyway.
-          publicApi.getStaff(slug).then(list => {
-            const m = list.find(s => s.id === sid);
-            if (m) { setSelectedStaff(m); }
-          });
-        }} />
+        <PortfolioGallery slug={slug} />
         <div className="pb-card">
           <h2>{t('booking.pickService', 'Choose a service')}</h2>
 

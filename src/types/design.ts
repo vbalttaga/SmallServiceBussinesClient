@@ -44,6 +44,8 @@ export interface TenantThemeDto {
   logoUrl?: string;
   bookingCoverUrl?: string;
   primaryColor?: string;
+  averageRating?: number;
+  reviewCount?: number;
   templateCode?: string;
   templateName?: string;
   colorsJson?: string;

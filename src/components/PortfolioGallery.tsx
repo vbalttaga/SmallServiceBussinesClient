@@ -7,15 +7,14 @@ interface Props {
   slug?: string;
   staffId?: number;
   serviceId?: number;
-  onSelectStaff?: (staffId: number) => void;
   compact?: boolean;
 }
 
 /**
- * Public-facing gallery. Clients browse work samples and can jump straight to
- * booking with the staff who produced a piece they like.
+ * Public-facing gallery. Clients browse work samples to inspire their service choice.
+ * Deep-linking to "Book with {staff}" needs a prior service selection — deferred.
  */
-export default function PortfolioGallery({ slug, staffId, serviceId, onSelectStaff, compact }: Props) {
+export default function PortfolioGallery({ slug, staffId, serviceId, compact }: Props) {
   const { t } = useTranslation();
   const [items, setItems] = useState<PortfolioItemDto[]>([]);
   const [likedIds, setLikedIds] = useState<Set<number>>(new Set());
@@ -64,15 +63,7 @@ export default function PortfolioGallery({ slug, staffId, serviceId, onSelectSta
             }}>
               <div style={{ flex: 1, minWidth: 0 }}>
                 {p.title && <div style={{ fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.title}</div>}
-                {p.staffName && onSelectStaff && p.staffId && (
-                  <button
-                    type="button"
-                    onClick={() => onSelectStaff(p.staffId!)}
-                    style={{ color: '#fff', background: 'transparent', border: 'none', padding: 0, textDecoration: 'underline', cursor: 'pointer', fontSize: 11 }}
-                  >
-                    {t('portfolio.bookWith', 'Book with {{name}}', { name: p.staffName })}
-                  </button>
-                )}
+                {p.staffName && <div style={{ fontSize: 11, opacity: .9 }}>{p.staffName}</div>}
               </div>
               <button
                 type="button"

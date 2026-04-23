@@ -2,9 +2,19 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Star } from 'lucide-react';
 import { reviewsApi, type ReviewDto } from '../api/featuresApi';
+import { useTenantTheme } from '../theme/ThemeProvider';
 
-export default function ReviewsSection({ slug, take = 12 }: { slug?: string; take?: number }) {
+interface Props {
+  slug?: string;
+  take?: number;
+  /** Optional override — if present, shown instead of a locally-computed average of `take` items. */
+  averageRating?: number;
+  totalCount?: number;
+}
+
+export default function ReviewsSection({ slug, take = 12, averageRating, totalCount }: Props) {
   const { t } = useTranslation();
+  const { theme } = useTenantTheme();
   const [reviews, setReviews] = useState<ReviewDto[]>([]);
 
   useEffect(() => {
@@ -12,15 +22,20 @@ export default function ReviewsSection({ slug, take = 12 }: { slug?: string; tak
   }, [slug, take]);
 
   if (reviews.length === 0) return null;
-  const avg = reviews.reduce((s, r) => s + r.rating, 0) / reviews.length;
+
+  // Prefer the server-side aggregate (accurate across all reviews) over a sample mean.
+  const tenantAvg = theme?.averageRating ?? averageRating;
+  const tenantCount = theme?.reviewCount ?? totalCount;
+  const avg = tenantAvg ?? reviews.reduce((s, r) => s + r.rating, 0) / reviews.length;
+  const count = tenantCount ?? reviews.length;
 
   return (
     <section style={{ margin: '32px 0' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
         <h2 style={{ fontSize: 20, margin: 0 }}>{t('reviews.title', 'What clients say')}</h2>
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: 4, color: '#f59e0b', fontWeight: 600 }}>
-          <Star size={16} fill="#f59e0b" /> {avg.toFixed(1)}
-          <span style={{ color: 'var(--tenant-text-muted, #64748b)', fontWeight: 400 }}>({reviews.length})</span>
+          <Star size={16} fill="#f59e0b" /> {Number(avg).toFixed(1)}
+          <span style={{ color: 'var(--tenant-text-muted, #64748b)', fontWeight: 400 }}>({count})</span>
         </div>
       </div>
 

@@ -24,7 +24,9 @@ export default function ReviewSubmitPage() {
       await reviewsApi.submitByToken(token, rating, comment.trim() || undefined);
       setDone(true);
     } catch (e: unknown) {
-      setError((e as Error)?.message ?? 'SUBMIT_FAILED');
+      // Axios nests the server's error code inside response.data.message.
+      const err = e as { response?: { data?: { message?: string } }; message?: string };
+      setError(err.response?.data?.message ?? err.message ?? 'SUBMIT_FAILED');
     } finally { setSubmitting(false); }
   }
 

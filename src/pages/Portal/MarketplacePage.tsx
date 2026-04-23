@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Star, MapPin, Search } from 'lucide-react';
 import { marketplaceApi, type MarketplaceBusinessDto } from '../../api/featuresApi';
@@ -17,12 +17,15 @@ export default function MarketplacePage() {
     businessTypesApi.list().then(setTypes).catch(() => setTypes([]));
   }, []);
 
+  // Guard against stale responses beating newer ones back (fast typing).
+  const requestSeq = useRef(0);
   useEffect(() => {
+    const mySeq = ++requestSeq.current;
     const handle = setTimeout(() => {
       marketplaceApi
         .search({ query: q || undefined, businessType: typeFilter || undefined, pageSize: 30 })
-        .then(setBusinesses)
-        .catch(() => setBusinesses([]));
+        .then((r) => { if (mySeq === requestSeq.current) setBusinesses(r); })
+        .catch(() => { if (mySeq === requestSeq.current) setBusinesses([]); });
     }, 250);
     return () => clearTimeout(handle);
   }, [q, typeFilter]);
