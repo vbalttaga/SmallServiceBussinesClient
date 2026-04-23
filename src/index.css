@@ -1,0 +1,196 @@
+:root,
+[data-theme="light"] {
+  /* Apple-inspired palette — mostly monochrome, minimal accent */
+  --color-bg: #f5f5f7;
+  --color-surface: #ffffff;
+  --color-text: #1d1d1f;
+  --color-text-secondary: #86868b;
+  --color-text-tertiary: #aeaeb2;
+  --color-link: #0066cc;
+  --color-separator: rgba(0, 0, 0, 0.06);
+  --color-fill: rgba(0, 0, 0, 0.03);
+  --color-fill-hover: rgba(0, 0, 0, 0.05);
+
+  /* Request type colors — muted, not screaming */
+  --color-dayoff: #34c759;
+  --color-workathome: #ff3b30;
+  --color-vacation: #30b0c7;
+  --color-sickleave: #ff6482;
+  --color-partialabsence: #8e8e93;
+  --color-businesstrip: #5856d6;
+}
+
+/* Dark mode palette */
+[data-theme="dark"] {
+  --color-bg: #1c1c1e;
+  --color-surface: #2c2c2e;
+  --color-text: #f5f5f7;
+  --color-text-secondary: #98989d;
+  --color-text-tertiary: #636366;
+  --color-link: #0a84ff;
+  --color-separator: rgba(255, 255, 255, 0.1);
+  --color-fill: rgba(255, 255, 255, 0.05);
+  --color-fill-hover: rgba(255, 255, 255, 0.08);
+
+  --color-dayoff: #30d158;
+  --color-workathome: #ff453a;
+  --color-vacation: #40c8e0;
+  --color-sickleave: #ff6482;
+  --color-partialabsence: #98989d;
+  --color-businesstrip: #5e5ce6;
+
+  color-scheme: dark;
+}
+
+[data-theme="dark"] .modal-content {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+}
+
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-select {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  border-color: var(--color-separator);
+}
+
+[data-theme="dark"] .form-control:focus,
+[data-theme="dark"] .form-select:focus {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+}
+
+[data-theme="dark"] .table {
+  --bs-table-bg: var(--color-surface);
+  --bs-table-color: var(--color-text);
+  --bs-table-border-color: var(--color-separator);
+  --bs-table-striped-bg: var(--color-fill);
+  --bs-table-hover-bg: var(--color-fill-hover);
+}
+
+[data-theme="dark"] .card {
+  background-color: var(--color-surface);
+  border-color: var(--color-separator);
+  color: var(--color-text);
+}
+
+[data-theme="dark"] .dropdown-menu {
+  background-color: var(--color-surface);
+  border-color: var(--color-separator);
+  color: var(--color-text);
+}
+
+[data-theme="dark"] .dropdown-item {
+  color: var(--color-text);
+}
+
+[data-theme="dark"] .dropdown-item:hover {
+  background-color: var(--color-fill-hover);
+}
+
+/* Typography & base styles */
+:root {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display',
+               'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.47059;
+  font-weight: 400;
+  letter-spacing: -0.022em;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+/* Override Bootstrap to feel Apple-native */
+.btn {
+  font-family: inherit;
+  font-weight: 400;
+  border-radius: 980px;
+  letter-spacing: inherit;
+}
+
+.form-control, .form-select {
+  font-family: inherit;
+  border: 1px solid var(--color-separator);
+  border-radius: 12px;
+  background: var(--color-bg);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--color-link);
+  box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.12);
+  background: #fff;
+}
+
+/* Scrollbar — near invisible */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Modal — Apple sheet style */
+.modal.show {
+  animation: sheetIn 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@keyframes sheetIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.modal-content {
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.05),
+              0 20px 60px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--color-separator);
+  padding: 20px 24px 16px;
+}
+
+.modal-header .modal-title {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.022em;
+}
+
+.modal-body {
+  padding: 20px 24px;
+}
+
+.modal-footer {
+  border-top: 1px solid var(--color-separator);
+  padding: 16px 24px 20px;
+}
+
+.modal-footer .btn {
+  min-width: 80px;
+}
